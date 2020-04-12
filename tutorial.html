@@ -13122,9 +13122,44 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pandas_datareader</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">wb</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+<span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="kn">import</span> <span class="n">iplot</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
+<span class="kn">import</span> <span class="nn">chart_studio</span>
+
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_palette</span><span class="p">(</span><span class="s1">&#39;Set3&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/Kasper/anaconda3/envs/corona_env_2/lib/python3.8/site-packages/pandas_datareader/compat/__init__.py:7: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  from pandas.util.testing import assert_frame_equal
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13289,6 +13324,171 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="n">friends</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sam&#39;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;One&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Five&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;Ten&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">});</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+
+
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">read_tab</span><span class="p">(</span><span class="n">sub</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ARGS </span>
+<span class="sd">            sub must be one of the sub-tables under api.covid19data.dk</span>
+<span class="sd">        RETURNS</span>
+<span class="sd">            Pandas dataframe </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://api.covid19data.dk/&#39;</span> <span class="o">+</span> <span class="n">sub</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="c1"># download Corona data</span>
+<span class="n">john_hopkins_df</span>          <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;john_hopkins_data&#39;</span><span class="p">)</span>
+<span class="n">ssi_cases_df</span>             <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_cases&#39;</span><span class="p">)</span>
+<span class="n">ssi_cases_ts_df</span>          <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_cases_ts&#39;</span><span class="p">)</span>
+<span class="n">ssi_countries_df</span>         <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_countries&#39;</span><span class="p">)</span>
+<span class="n">ssi_deaths_ts_df</span>         <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_deaths_ts&#39;</span><span class="p">)</span>
+<span class="n">ssi_demo_cases_df</span>        <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_demo_cases&#39;</span><span class="p">)</span>
+<span class="n">ssi_demo_tests_df</span>        <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_demo_tests&#39;</span><span class="p">)</span>
+<span class="n">ssi_geography_cases_df</span>   <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_geography_cases&#39;</span><span class="p">)</span>
+<span class="n">ssi_geography_labs_df</span>    <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_geography_labs&#39;</span><span class="p">)</span>
+<span class="n">ssi_geography_lut_df</span>     <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_geography_lut&#39;</span><span class="p">)</span>
+<span class="n">ssi_hospitalized_df</span>      <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_hospitalized&#39;</span><span class="p">)</span>
+<span class="n">ssi_sources_df</span>           <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;ssi_sources&#39;</span><span class="p">)</span>
+<span class="n">worldometers_overview_df</span> <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;worldometers_overview&#39;</span><span class="p">)</span>
+<span class="n">worldometers_tests_df</span>    <span class="o">=</span> <span class="n">read_tab</span><span class="p">(</span><span class="s1">&#39;worldometers_tests&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># download population data straight from world bank using pandas-datareader</span>
+<span class="n">countries</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AF&#39;</span><span class="p">,</span> <span class="s1">&#39;AL&#39;</span><span class="p">,</span> <span class="s1">&#39;DZ&#39;</span><span class="p">,</span> <span class="s1">&#39;AS&#39;</span><span class="p">,</span> <span class="s1">&#39;AD&#39;</span><span class="p">,</span> <span class="s1">&#39;AO&#39;</span><span class="p">,</span> <span class="s1">&#39;AG&#39;</span><span class="p">,</span> <span class="s1">&#39;AR&#39;</span><span class="p">,</span> <span class="s1">&#39;AM&#39;</span><span class="p">,</span> <span class="s1">&#39;AW&#39;</span><span class="p">,</span> <span class="s1">&#39;AU&#39;</span><span class="p">,</span> <span class="s1">&#39;AT&#39;</span><span class="p">,</span> <span class="s1">&#39;AZ&#39;</span><span class="p">,</span> <span class="s1">&#39;BS&#39;</span><span class="p">,</span> <span class="s1">&#39;BH&#39;</span><span class="p">,</span> <span class="s1">&#39;BD&#39;</span><span class="p">,</span> <span class="s1">&#39;BB&#39;</span><span class="p">,</span> <span class="s1">&#39;BY&#39;</span><span class="p">,</span> <span class="s1">&#39;BE&#39;</span><span class="p">,</span> <span class="s1">&#39;BZ&#39;</span><span class="p">,</span> <span class="s1">&#39;BJ&#39;</span><span class="p">,</span> <span class="s1">&#39;BM&#39;</span><span class="p">,</span> <span class="s1">&#39;BT&#39;</span><span class="p">,</span> <span class="s1">&#39;BO&#39;</span><span class="p">,</span> <span class="s1">&#39;BA&#39;</span><span class="p">,</span> <span class="s1">&#39;BW&#39;</span><span class="p">,</span> <span class="s1">&#39;BR&#39;</span><span class="p">,</span> <span class="s1">&#39;BG&#39;</span><span class="p">,</span> <span class="s1">&#39;BF&#39;</span><span class="p">,</span> <span class="s1">&#39;BI&#39;</span><span class="p">,</span> <span class="s1">&#39;CV&#39;</span><span class="p">,</span> <span class="s1">&#39;CM&#39;</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="s1">&#39;KY&#39;</span><span class="p">,</span> <span class="s1">&#39;CF&#39;</span><span class="p">,</span> <span class="s1">&#39;TD&#39;</span><span class="p">,</span> <span class="s1">&#39;CL&#39;</span><span class="p">,</span> <span class="s1">&#39;CN&#39;</span><span class="p">,</span> <span class="s1">&#39;CO&#39;</span><span class="p">,</span> <span class="s1">&#39;KM&#39;</span><span class="p">,</span> <span class="s1">&#39;CD&#39;</span><span class="p">,</span> <span class="s1">&#39;CG&#39;</span><span class="p">,</span> <span class="s1">&#39;CR&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;CU&#39;</span><span class="p">,</span> <span class="s1">&#39;CW&#39;</span><span class="p">,</span> <span class="s1">&#39;CY&#39;</span><span class="p">,</span> <span class="s1">&#39;CZ&#39;</span><span class="p">,</span> <span class="s1">&#39;CI&#39;</span><span class="p">,</span> <span class="s1">&#39;DK&#39;</span><span class="p">,</span> <span class="s1">&#39;DJ&#39;</span><span class="p">,</span> <span class="s1">&#39;DM&#39;</span><span class="p">,</span> <span class="s1">&#39;DO&#39;</span><span class="p">,</span> <span class="s1">&#39;EC&#39;</span><span class="p">,</span> <span class="s1">&#39;EG&#39;</span><span class="p">,</span> <span class="s1">&#39;SV&#39;</span><span class="p">,</span> <span class="s1">&#39;GQ&#39;</span><span class="p">,</span> <span class="s1">&#39;ER&#39;</span><span class="p">,</span> <span class="s1">&#39;EE&#39;</span><span class="p">,</span> <span class="s1">&#39;SZ&#39;</span><span class="p">,</span> <span class="s1">&#39;ET&#39;</span><span class="p">,</span> <span class="s1">&#39;FO&#39;</span><span class="p">,</span> <span class="s1">&#39;FJ&#39;</span><span class="p">,</span> <span class="s1">&#39;FI&#39;</span><span class="p">,</span> <span class="s1">&#39;FR&#39;</span><span class="p">,</span> <span class="s1">&#39;PF&#39;</span><span class="p">,</span> <span class="s1">&#39;GA&#39;</span><span class="p">,</span> <span class="s1">&#39;GM&#39;</span><span class="p">,</span> <span class="s1">&#39;GE&#39;</span><span class="p">,</span> <span class="s1">&#39;GI&#39;</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">,</span> <span class="s1">&#39;GL&#39;</span><span class="p">,</span> <span class="s1">&#39;GD&#39;</span><span class="p">,</span> <span class="s1">&#39;GU&#39;</span><span class="p">,</span> <span class="s1">&#39;GT&#39;</span><span class="p">,</span> <span class="s1">&#39;GN&#39;</span><span class="p">,</span> <span class="s1">&#39;GW&#39;</span><span class="p">,</span> <span class="s1">&#39;GY&#39;</span><span class="p">,</span> <span class="s1">&#39;HT&#39;</span><span class="p">,</span> <span class="s1">&#39;HN&#39;</span><span class="p">,</span> <span class="s1">&#39;HK&#39;</span><span class="p">,</span> <span class="s1">&#39;HU&#39;</span><span class="p">,</span> <span class="s1">&#39;IS&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;IR&#39;</span><span class="p">,</span> <span class="s1">&#39;IQ&#39;</span><span class="p">,</span> <span class="s1">&#39;IE&#39;</span><span class="p">,</span> <span class="s1">&#39;IM&#39;</span><span class="p">,</span> <span class="s1">&#39;IL&#39;</span><span class="p">,</span> <span class="s1">&#39;IT&#39;</span><span class="p">,</span> <span class="s1">&#39;JM&#39;</span><span class="p">,</span> <span class="s1">&#39;JP&#39;</span><span class="p">,</span> <span class="s1">&#39;JO&#39;</span><span class="p">,</span> <span class="s1">&#39;KZ&#39;</span><span class="p">,</span> <span class="s1">&#39;KE&#39;</span><span class="p">,</span> <span class="s1">&#39;KI&#39;</span><span class="p">,</span> <span class="s1">&#39;KP&#39;</span><span class="p">,</span> <span class="s1">&#39;KR&#39;</span><span class="p">,</span> <span class="s1">&#39;KW&#39;</span><span class="p">,</span> <span class="s1">&#39;KG&#39;</span><span class="p">,</span> <span class="s1">&#39;LA&#39;</span><span class="p">,</span> <span class="s1">&#39;LV&#39;</span><span class="p">,</span> <span class="s1">&#39;LB&#39;</span><span class="p">,</span> <span class="s1">&#39;LS&#39;</span><span class="p">,</span> <span class="s1">&#39;LR&#39;</span><span class="p">,</span> <span class="s1">&#39;LY&#39;</span><span class="p">,</span> <span class="s1">&#39;LI&#39;</span><span class="p">,</span> <span class="s1">&#39;LT&#39;</span><span class="p">,</span> <span class="s1">&#39;LU&#39;</span><span class="p">,</span> <span class="s1">&#39;MO&#39;</span><span class="p">,</span> <span class="s1">&#39;MG&#39;</span><span class="p">,</span> <span class="s1">&#39;MW&#39;</span><span class="p">,</span> <span class="s1">&#39;MY&#39;</span><span class="p">,</span> <span class="s1">&#39;MV&#39;</span><span class="p">,</span> <span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="s1">&#39;MT&#39;</span><span class="p">,</span> <span class="s1">&#39;MH&#39;</span><span class="p">,</span> <span class="s1">&#39;MR&#39;</span><span class="p">,</span> <span class="s1">&#39;MU&#39;</span><span class="p">,</span> <span class="s1">&#39;MX&#39;</span><span class="p">,</span> <span class="s1">&#39;FM&#39;</span><span class="p">,</span> <span class="s1">&#39;MD&#39;</span><span class="p">,</span> <span class="s1">&#39;MC&#39;</span><span class="p">,</span> <span class="s1">&#39;MN&#39;</span><span class="p">,</span> <span class="s1">&#39;ME&#39;</span><span class="p">,</span> <span class="s1">&#39;MA&#39;</span><span class="p">,</span> <span class="s1">&#39;MZ&#39;</span><span class="p">,</span> <span class="s1">&#39;MM&#39;</span><span class="p">,</span> <span class="s1">&#39;NA&#39;</span><span class="p">,</span> <span class="s1">&#39;NR&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">,</span> <span class="s1">&#39;NL&#39;</span><span class="p">,</span> <span class="s1">&#39;NC&#39;</span><span class="p">,</span> <span class="s1">&#39;NZ&#39;</span><span class="p">,</span> <span class="s1">&#39;NI&#39;</span><span class="p">,</span> <span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="s1">&#39;NG&#39;</span><span class="p">,</span> <span class="s1">&#39;MP&#39;</span><span class="p">,</span> <span class="s1">&#39;NO&#39;</span><span class="p">,</span> <span class="s1">&#39;OM&#39;</span><span class="p">,</span> <span class="s1">&#39;PK&#39;</span><span class="p">,</span> <span class="s1">&#39;PW&#39;</span><span class="p">,</span> <span class="s1">&#39;PS&#39;</span><span class="p">,</span> <span class="s1">&#39;PA&#39;</span><span class="p">,</span> <span class="s1">&#39;PG&#39;</span><span class="p">,</span> <span class="s1">&#39;PY&#39;</span><span class="p">,</span> <span class="s1">&#39;PE&#39;</span><span class="p">,</span> <span class="s1">&#39;PH&#39;</span><span class="p">,</span> <span class="s1">&#39;PL&#39;</span><span class="p">,</span> <span class="s1">&#39;PT&#39;</span><span class="p">,</span> <span class="s1">&#39;PR&#39;</span><span class="p">,</span> <span class="s1">&#39;QA&#39;</span><span class="p">,</span> <span class="s1">&#39;MK&#39;</span><span class="p">,</span> <span class="s1">&#39;RO&#39;</span><span class="p">,</span> <span class="s1">&#39;RU&#39;</span><span class="p">,</span> <span class="s1">&#39;RW&#39;</span><span class="p">,</span> <span class="s1">&#39;KN&#39;</span><span class="p">,</span> <span class="s1">&#39;LC&#39;</span><span class="p">,</span> <span class="s1">&#39;MF&#39;</span><span class="p">,</span> <span class="s1">&#39;VC&#39;</span><span class="p">,</span> <span class="s1">&#39;WS&#39;</span><span class="p">,</span> <span class="s1">&#39;SM&#39;</span><span class="p">,</span> <span class="s1">&#39;ST&#39;</span><span class="p">,</span> <span class="s1">&#39;SA&#39;</span><span class="p">,</span> <span class="s1">&#39;SN&#39;</span><span class="p">,</span> <span class="s1">&#39;RS&#39;</span><span class="p">,</span> <span class="s1">&#39;SC&#39;</span><span class="p">,</span> <span class="s1">&#39;SL&#39;</span><span class="p">,</span> <span class="s1">&#39;SG&#39;</span><span class="p">,</span> <span class="s1">&#39;SX&#39;</span><span class="p">,</span> <span class="s1">&#39;SK&#39;</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;SB&#39;</span><span class="p">,</span> <span class="s1">&#39;SO&#39;</span><span class="p">,</span> <span class="s1">&#39;ZA&#39;</span><span class="p">,</span> <span class="s1">&#39;SS&#39;</span><span class="p">,</span> <span class="s1">&#39;ES&#39;</span><span class="p">,</span> <span class="s1">&#39;LK&#39;</span><span class="p">,</span> <span class="s1">&#39;SD&#39;</span><span class="p">,</span> <span class="s1">&#39;SR&#39;</span><span class="p">,</span> <span class="s1">&#39;SE&#39;</span><span class="p">,</span> <span class="s1">&#39;CH&#39;</span><span class="p">,</span> <span class="s1">&#39;SY&#39;</span><span class="p">,</span> <span class="s1">&#39;TJ&#39;</span><span class="p">,</span> <span class="s1">&#39;TZ&#39;</span><span class="p">,</span> <span class="s1">&#39;TH&#39;</span><span class="p">,</span> <span class="s1">&#39;TL&#39;</span><span class="p">,</span> <span class="s1">&#39;TG&#39;</span><span class="p">,</span> <span class="s1">&#39;TO&#39;</span><span class="p">,</span> <span class="s1">&#39;TT&#39;</span><span class="p">,</span> <span class="s1">&#39;TN&#39;</span><span class="p">,</span> <span class="s1">&#39;TR&#39;</span><span class="p">,</span> <span class="s1">&#39;TM&#39;</span><span class="p">,</span> <span class="s1">&#39;TC&#39;</span><span class="p">,</span> <span class="s1">&#39;TV&#39;</span><span class="p">,</span> <span class="s1">&#39;UG&#39;</span><span class="p">,</span> <span class="s1">&#39;UA&#39;</span><span class="p">,</span> <span class="s1">&#39;AE&#39;</span><span class="p">,</span> <span class="s1">&#39;GB&#39;</span><span class="p">,</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="s1">&#39;UY&#39;</span><span class="p">,</span> <span class="s1">&#39;UZ&#39;</span><span class="p">,</span> <span class="s1">&#39;VU&#39;</span><span class="p">,</span> <span class="s1">&#39;VE&#39;</span><span class="p">,</span> <span class="s1">&#39;VN&#39;</span><span class="p">,</span> <span class="s1">&#39;VG&#39;</span><span class="p">,</span> <span class="s1">&#39;VI&#39;</span><span class="p">,</span> <span class="s1">&#39;YE&#39;</span><span class="p">,</span> <span class="s1">&#39;ZM&#39;</span><span class="p">,</span> <span class="s1">&#39;ZW&#39;</span><span class="p">]</span>
+<span class="n">population_df</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">indicator</span><span class="o">=</span><span class="s1">&#39;sp.pop.totl&#39;</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="n">countries</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">2018</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">2018</span><span class="p">)</span>
+<span class="c1"># nicify </span>
+<span class="n">population_df</span> <span class="o">=</span> <span class="n">population_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sp.pop.totl&#39;</span><span class="p">:</span><span class="s1">&#39;population&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># To date_time and rename columns</span>
+<span class="n">john_hopkins_df</span><span class="p">[</span><span class="s1">&#39;dates&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">john_hopkins_df</span><span class="p">[</span><span class="s1">&#39;dates&#39;</span><span class="p">])</span>
+<span class="n">john_hopkins_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;country_region&#39;</span><span class="p">:</span> <span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;province_state&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Merge population data for each country to the data frame</span>
+<span class="n">john_hopkins_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">john_hopkins_df</span><span class="p">,</span> <span class="n">population_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<span class="n">john_hopkins_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;dates&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># New variables</span>
+<span class="n">john_hopkins_df</span><span class="p">[</span><span class="s1">&#39;deaths_per_mio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">john_hopkins_df</span><span class="p">[</span><span class="s1">&#39;deaths&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">john_hopkins_df</span><span class="p">[</span><span class="s1">&#39;population&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000000</span><span class="p">)</span>
+
+<span class="c1"># Rename US to United States</span>
+<span class="n">john_hopkins_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">john_hopkins_df</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;United States&#39;</span>
+
+<span class="c1"># Remove states state specifik rows from the dataframe</span>
+<span class="c1">#print(f&#39;Dropping the {len(john_hopkins_df[~john_hopkins_df[&quot;state&quot;].isnull()])} state specifik rows out of the total {john_hopkins_df.shape[0]} rows of the dataframe&#39;)</span>
+<span class="c1">#john_hopkins_df = john_hopkins_df[john_hopkins_df[&#39;state&#39;].isnull()]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Interactive visualisation</span>
+<span class="k">def</span> <span class="nf">interactive_plot</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="s1">&#39;Denmark&#39;</span><span class="p">,</span> <span class="n">y_var_chosen</span><span class="o">=</span><span class="s1">&#39;Deaths&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">y_var_chosen</span> <span class="o">==</span> <span class="s1">&#39;Deaths&#39;</span><span class="p">:</span>
+        <span class="n">y_var</span> <span class="o">=</span> <span class="s1">&#39;deaths&#39;</span>
+    <span class="k">elif</span> <span class="n">y_var_chosen</span> <span class="o">==</span> <span class="s1">&#39;Deaths per mio. capita&#39;</span><span class="p">:</span>
+        <span class="n">y_var</span> <span class="o">=</span> <span class="s1">&#39;deaths_per_mio&#39;</span>
+    <span class="k">elif</span> <span class="n">y_var_chosen</span> <span class="o">==</span> <span class="s1">&#39;Confirmed cases&#39;</span><span class="p">:</span>
+        <span class="n">y_var</span> <span class="o">=</span> <span class="s1">&#39;confirmed&#39;</span>
+    <span class="k">elif</span> <span class="n">y_var_chosen</span> <span class="o">==</span> <span class="s1">&#39;Recovered patients&#39;</span><span class="p">:</span>
+        <span class="n">y_var</span> <span class="o">=</span> <span class="s1">&#39;recovered&#39;</span>
+
+    <span class="n">country_chosen</span> <span class="o">=</span> <span class="n">john_hopkins_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;country == &quot;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+    <span class="n">days_with_deaths</span> <span class="o">=</span> <span class="p">(</span><span class="n">country_chosen</span><span class="p">[</span><span class="s1">&#39;deaths&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">first_death_date</span> <span class="o">=</span> <span class="n">country_chosen</span><span class="p">[(</span><span class="n">country_chosen</span><span class="p">[</span><span class="s1">&#39;deaths&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)][</span><span class="s1">&#39;dates&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s1"> has had a positive death count for </span><span class="si">{</span><span class="n">days_with_deaths</span><span class="si">}</span><span class="s1"> days, starting on </span><span class="si">{</span><span class="n">first_death_date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">above_one</span> <span class="o">=</span> <span class="n">country_chosen</span><span class="p">[</span><span class="n">y_var</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">country_chosen</span><span class="p">[</span><span class="n">above_one</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;dates&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_var</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">country</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">y_var_chosen</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dates&#39;</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="c1"># Series of all contries in the dataframe to choose from</span>
+<span class="n">countries</span> <span class="o">=</span> <span class="n">john_hopkins_df</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>    
+
+<span class="c1"># Make the plot interactive</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">interactive_plot</span><span class="p">,</span>
+    <span class="n">country</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">countries</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;Denmark&#39;</span><span class="p">),</span>
+    <span class="n">y_var_chosen</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Y-variable&#39;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Deaths&#39;</span><span class="p">,</span> <span class="s1">&#39;Deaths per mio. capita&#39;</span><span class="p">,</span> <span class="s1">&#39;Confirmed cases&#39;</span><span class="p">,</span> <span class="s1">&#39;Recovered patients&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;Deaths&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
